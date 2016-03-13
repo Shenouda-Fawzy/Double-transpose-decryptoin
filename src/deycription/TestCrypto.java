@@ -32,8 +32,11 @@ public class TestCrypto {
         
         System.out.println();
         System.out.println();
+        System.out.println("--------------- Double Transpose ----------------");
         DTranspose transpose = new DTranspose();
-        String test = transpose.decryptDTranspose("Mytnametistshenoudaa");
+        //String test = transpose.decryptDTranspose("HitItamtshenouda");
+        //String test = transpose.decryptDTranspose("name");
+        String test = transpose.decryptDTranspose("MytNametistshenoudaa");
         System.out.println(test);
         
         int [] x = {1 , 2 , 4};

@@ -11,6 +11,13 @@ public class DTranspose {
 
     }
 
+    private boolean isPrime(int num){
+        for(int i = 2 ; i <= num / 2 ; i++ )
+            if(num % i == 0)
+                return false;
+        return true;
+    }
+    
     public String decryptDTranspose(String cipherText) {
         // 'My Name is shenoudaa'
         List factors = new ArrayList();
@@ -21,106 +28,112 @@ public class DTranspose {
         }
 
         factors = getFactors(cipherLen);
-    
+
 //Reapeated part.
-        
-        
-        char [][] matrix = createMatrix(cipherLen, factors);
-        matrix = fillMatrix(cipherText, matrix);
-        
-        String dis = displayMatrix(matrix);
+        List<MatDimention> matDimentions = createMatrix(cipherLen, factors); // get list of all possible dimensions.
+        for (int i = 0; i < matDimentions.size(); i++) {
+
+            char[][] matrix = fillMatrix(cipherText, matDimentions.get(i));
+            String dis = displayMatrix(matrix);
+            System.out.println(dis);
+        }
         String fac = "";
         for (int i = 0; i < factors.size(); i++) {
             fac += factors.get(i) + " ";
         }
-        System.out.println(dis);
+        //System.out.println(dis);
         return fac;
     }
 
     private List getFactors(int num) {
         List factors = new ArrayList();
-        System.out.println("getFactors Start");
+        //System.out.println("getFactors Start");
         for (int i = 1; i <= num / 2; i++) {
             if (num % i == 0) {
                 factors.add(i);
             }
         }
-        System.out.println("getFactors END");
+        factors.add(num);
+        //System.out.println("getFactors END");
         return factors;
     }
 
-    private char[][] createMatrix(int num, List factors) {
+    private List<MatDimention> createMatrix(int num, List factors) {
         List<MatDimention> matDimentions = new ArrayList<>();
+
+        // the num and it's factor.
+        //System.out.println("createMatrix Start");
         
-        // the num and its factor.
-        char matrix[][] = new char[1][1];
-        System.out.println("createMatrix Start");
-        int i = 0;
-        int j = m;
-        int n1 = 0;
-        int n2 = 0;
-        for (i  = k; i < factors.size() - 1; i++) {
-            for (j = 1; j < factors.size(); j++) {
+        int n1 ;
+        int n2 ;
+        for (int i = 0; i < factors.size() ; i++) {
+            for (int j = 0; j < factors.size(); j++) {
                 n1 = (int) factors.get(i);
                 n2 = (int) factors.get(j);
 
                 if (n1 * n2 == num) {
-                    matrix = new char[n1][n2];
-                    
-                    k = i;
-                    m = j;
-                    break;
-                }
-            }
-            if(n1 * n2 == num)
-                break;
-        }// end of for.
-        System.out.println("createMatrix END");
-        return matrix;
+                    if(n1 != n2){
+                        matDimentions.add(new MatDimention(n1, n2)); // this list contatin all possible dimension of matrix.
+                        //matDimentions.add(new MatDimention(n2, n1)); // this list contatin all possible dimension of matrix.
+                    }
+                    else
+                        matDimentions.add(new MatDimention(n2, n1)); // this list contatin all possible dimension of matrix.
+
+                } // end of outer if.
+            }// end of innner for
+
+        }// end of outer for.
+        //System.out.println("createMatrix END");
+        return matDimentions;
     }
-    
-    private char [][] fillMatrix(String cipherText , char[][] matrix){
-        System.out.println("fillMatrix Start");
+
+    private char[][] fillMatrix(String cipherText, MatDimention matDimention) {
+        char[][] matrix = new char [matDimention.getRow()][matDimention.getColumn()];
+        //System.out.println("fillMatrix Start");
         int k = 0;
-        for(int i = 0 ; i < matrix.length ; i++) // for every row
-            for(int j = 0 ; j < matrix[i].length ; j++){ // for every column.
+        for (int i = 0; i < matrix.length; i++) // for every row
+        {
+            for (int j = 0; j < matrix[i].length; j++) { // for every column.
                 matrix[i][j] = cipherText.charAt(k);
                 k++;
             }
-                
-        System.out.println("fillMatrix END");
+        }
+
+        //System.out.println("fillMatrix END");
         return matrix;
     }
-    
-    private String displayMatrix(char [][] matrix){
+
+    private String displayMatrix(char[][] matrix) {
         StringBuilder bulBuilder = new StringBuilder();
-        System.out.println("displayMatrix Start");
-        for(int i = 0 ; i < matrix.length ; i++){ // for every row
-            for(int j = 0 ; j < matrix[i].length ; j++) // for every column.
+        //System.out.println("displayMatrix Start");
+        for (int i = 0; i < matrix.length; i++) { // for every row
+            for (int j = 0; j < matrix[i].length; j++) // for every column.
+            {
                 bulBuilder.append(matrix[i][j]);
+            }
             bulBuilder.append("\n");
         }
-        System.out.println("displayMatrix END");
-        System.out.println();
+        //System.out.println("displayMatrix END");
+        //System.out.println();
         return bulBuilder.toString().toUpperCase();
     }
-    
-    class MatDimention{
-        int column , row;
-        private MatDimention(int column , int row){
+
+    class MatDimention {
+
+        int column, row;
+
+        private MatDimention(int column, int row) {
             this.column = column;
             this.row = row;
         }
-        
-        private int getColumn(){
+
+        private int getColumn() {
             return this.column;
         }
-        
-        private int getRow(){
+
+        private int getRow() {
             return this.row;
         }
-        
-        
-        
+
     }
 }
