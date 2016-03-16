@@ -36,18 +36,18 @@ public class TestCrypto {
         DTranspose transpose = new DTranspose();
         //String test = transpose.decryptDTranspose("HitItamtshenouda");
         //String test = transpose.decryptDTranspose("name");
-        String test = transpose.decryptDTranspose("MytNametistshenoudaa");
+        String test = transpose.decryptDTranspose("factorial");
+        //String test = transpose.decryptDTranspose("MytNametistshenoudaa");
         System.out.println(test);
         
-        int [] x = {1 , 2 , 4};
         
-        testArr(x);
-        
-        for(int i = 0 ; i < x.length ; i++)
-            System.out.print(x[i] + " ");
-        
-        
-        
+    }
+    
+    private static boolean isPrime(int num){
+        for(int i = 2 ; i <= num / 2 ; i++ )
+            if(num % i == 0)
+                return false;
+        return true;
     }
     
     private static void testArr(int[] arr){

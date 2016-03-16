@@ -6,7 +6,7 @@ import java.util.List;
 public class DTranspose {
 
     static int k = 0, m = 0;
-
+    String plain;
     public DTranspose() {
 
     }
@@ -23,10 +23,9 @@ public class DTranspose {
         List factors = new ArrayList();
 
         int cipherLen = cipherText.length();
-        if (cipherLen % 2 != 0) {
-            cipherLen += 1;
+        if(isPrime(cipherLen)){
+            cipherLen++;
         }
-
         factors = getFactors(cipherLen);
 
 //Reapeated part.
@@ -34,9 +33,40 @@ public class DTranspose {
         for (int i = 0; i < matDimentions.size(); i++) {
 
             char[][] matrix = fillMatrix(cipherText, matDimentions.get(i));
-            String dis = displayMatrix(matrix);
-            System.out.println(dis);
+            //String dis = displayMatrix(matrix);
+            //System.out.println(dis);
+            //shiftColumn(matrix);
         }
+        
+        //System.out.println("Test Shuffling");
+//        char[][] matArr = {
+//            {'n','a'},
+//            {'m', 'e'}
+//        };
+//        char[][] matArr = {
+//            {'f','a', 'c'},
+//            {'t', 'o','r'},
+//            {'i','a','l'}
+//        };
+//        char[][] matArr = {
+//            {'a','f', 'c'},
+//            {'o', 't','r'},
+//            {'a','i','l'}
+//        };
+//        char[][] matArr = {
+//            {'1','4', '7'},
+//            {'2', '5','8'},
+//            {'3','6','9'}
+//        };
+
+        char[][] matArr = {
+            {'1','3'},
+            {'2', '4'}
+            
+        };
+        //shiftColumn(matArr);
+        shiftRow(matArr);
+        
         String fac = "";
         for (int i = 0; i < factors.size(); i++) {
             fac += factors.get(i) + " ";
@@ -44,6 +74,47 @@ public class DTranspose {
         //System.out.println(dis);
         return fac;
     }
+    
+    private void shiftRow(char[][] matrix){
+        
+        int rowLen = matrix[0].length;
+        int numOfRow = matrix.length;
+        char [] tempRow = new char[rowLen];
+        
+        for(int i = 0 ; i < numOfRow ; i++){
+            for(int j = 0 ; j < numOfRow ; j++){
+                if(i == j)
+                    continue;
+                for(int k = 0 ; k < rowLen ; k++){
+                    tempRow[k] = matrix[i][k];
+                    matrix[i][k] = matrix[j][k];
+                    matrix[j][k] = tempRow[k];
+                }
+                shiftColumn(matrix);
+                //String test = displayMatrix(matrix);
+                //System.out.println(test);
+            }
+        }
+    }
+    
+    private void shiftColumn(char [][] matrix){
+        char[] tempColumn = new char[matrix.length];
+        int numOfColumn = matrix[0].length;
+        
+        for(int i = 0 ; i < numOfColumn  ; i++){
+            for(int j = 0 ; j < numOfColumn ; j++){
+                if(i == j)
+                    continue;
+                for(int k = 0 ; k < matrix.length ; k++){
+                    tempColumn[k] = matrix[k][i];
+                    matrix[k][i] = matrix[k][j];
+                    matrix[k][j] = tempColumn[k];
+                }
+                String test = displayMatrix(matrix);
+                System.out.println(test);
+            }
+        }// end of outer for loop.
+    }// end of shiftColumn method.
 
     private List getFactors(int num) {
         List factors = new ArrayList();
@@ -53,7 +124,7 @@ public class DTranspose {
                 factors.add(i);
             }
         }
-        factors.add(num);
+        //factors.add(num);
         //System.out.println("getFactors END");
         return factors;
     }
