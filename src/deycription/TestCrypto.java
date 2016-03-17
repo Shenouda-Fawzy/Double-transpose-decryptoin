@@ -36,7 +36,15 @@ public class TestCrypto {
         DTranspose transpose = new DTranspose();
         //String test = transpose.decryptDTranspose("HitItamtshenouda");
         //String test = transpose.decryptDTranspose("name");
-        String test = transpose.decryptDTranspose("factorial");
+        //String test = transpose.decryptDTranspose("factorial");
+        //String test = transpose.decryptDTranspose("231897564");
+        //String test = transpose.decryptDTranspose("OR IMAP RGMAEM R IAHEVN  OILEF");
+        //String test = transpose.decryptDTranspose("programmer");
+        //String test = transpose.decryptDTranspose("rehpic"); // cipher.
+        String test = transpose.decryptDTranspose("laicafrot"); // Factorial
+        
+//        String test = transpose.decryptDTranspose("123456789");
+        //String test = transpose.decryptDTranspose("eman");
         //String test = transpose.decryptDTranspose("MytNametistshenoudaa");
         System.out.println(test);
         

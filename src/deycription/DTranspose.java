@@ -3,12 +3,35 @@ package deycription;
 import java.util.ArrayList;
 import java.util.List;
 
+
+// For decryption we must shift the column first.
+
 public class DTranspose {
 
     static int k = 0, m = 0;
     String plain;
+    List dictionary;
+    boolean found;
     public DTranspose() {
-
+        dictionary = new ArrayList();
+        found = false;
+        fillDictionary();
+    }
+    
+    private void fillDictionary(){
+        dictionary.add("NAME");
+        dictionary.add("123456789");
+        dictionary.add("FACTORIAL");
+        dictionary.add("CIPHER");
+        dictionary.add("ALGORITHM");
+        dictionary.add("PRISON");
+        dictionary.add("SHENOUDA");
+        dictionary.add("PROGRAMMER");
+        dictionary.add("HAVE");
+        dictionary.add("NO");
+        dictionary.add("LIFE");
+        
+        
     }
 
     private boolean isPrime(int num){
@@ -25,6 +48,7 @@ public class DTranspose {
         int cipherLen = cipherText.length();
         if(isPrime(cipherLen)){
             cipherLen++;
+            cipherText += " ";
         }
         factors = getFactors(cipherLen);
 
@@ -33,12 +57,17 @@ public class DTranspose {
         for (int i = 0; i < matDimentions.size(); i++) {
 
             char[][] matrix = fillMatrix(cipherText, matDimentions.get(i));
+            shiftColumn(matrix);
+            if(found == true)
+                break;
+            // for decryption.
+            //shiftRow(matrix); // for encryption.
             //String dis = displayMatrix(matrix);
             //System.out.println(dis);
             //shiftColumn(matrix);
         }
         
-        //System.out.println("Test Shuffling");
+        System.out.println("Test Shuffling");
 //        char[][] matArr = {
 //            {'n','a'},
 //            {'m', 'e'}
@@ -58,14 +87,25 @@ public class DTranspose {
 //            {'2', '5','8'},
 //            {'3','6','9'}
 //        };
-
         char[][] matArr = {
-            {'1','3'},
-            {'2', '4'}
-            
+            {'9','7', '8'},
+            {'3', '2','1'},
+            {'6','4','5'}
         };
+
+//        char[][] matArr = {
+//            {'1','3'},
+//            {'2', '4'}
+//            
+//        };
+        
+//        char[][] matArr = {
+//            {'e','m'},
+//            {'a', 'n'}
+//            
+//        };
+        //shiftRow(matArr);
         //shiftColumn(matArr);
-        shiftRow(matArr);
         
         String fac = "";
         for (int i = 0; i < factors.size(); i++) {
@@ -80,7 +120,7 @@ public class DTranspose {
         int rowLen = matrix[0].length;
         int numOfRow = matrix.length;
         char [] tempRow = new char[rowLen];
-        
+        String test;
         for(int i = 0 ; i < numOfRow ; i++){
             for(int j = 0 ; j < numOfRow ; j++){
                 if(i == j)
@@ -90,9 +130,14 @@ public class DTranspose {
                     matrix[i][k] = matrix[j][k];
                     matrix[j][k] = tempRow[k];
                 }
-                shiftColumn(matrix);
-                //String test = displayMatrix(matrix);
+                //shiftColumn(matrix);
+                test = displayMatrix(matrix);
                 //System.out.println(test);
+                if(isFounded(test) == true && found == false){
+                    System.out.println(test);
+                    found = true;
+                    return;
+                }
             }
         }
     }
@@ -110,8 +155,11 @@ public class DTranspose {
                     matrix[k][i] = matrix[k][j];
                     matrix[k][j] = tempColumn[k];
                 }
-                String test = displayMatrix(matrix);
-                System.out.println(test);
+                shiftRow(matrix);
+                if(found == true)
+                    return;
+                //String test = displayMatrix(matrix);
+                //System.out.println(test);
             }
         }// end of outer for loop.
     }// end of shiftColumn method.
@@ -182,7 +230,7 @@ public class DTranspose {
             {
                 bulBuilder.append(matrix[i][j]);
             }
-            bulBuilder.append("\n");
+            //bulBuilder.append("\n");
         }
         //System.out.println("displayMatrix END");
         //System.out.println();
@@ -206,5 +254,13 @@ public class DTranspose {
             return this.row;
         }
 
+    }
+    
+    private boolean isFounded(String str){
+        String [] tokens = str.split(" ");
+        if(dictionary.contains(tokens[0]))
+            return true;
+        else
+            return false;
     }
 }
